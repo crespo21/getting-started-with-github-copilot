@@ -36,3 +36,20 @@ def test_activity_not_found():
     response = client.post("/activities/NonExistent/signup?email=test@mergington.edu")
     assert response.status_code == 404
     assert "Activity not found" in response.json()["detail"]
+
+def test_new_activity_signup():
+    """Test signup for newly added activities"""
+    # Test Basketball Team (sports)
+    response = client.post("/activities/Basketball%20Team/signup?email=newplayer@mergington.edu")
+    assert response.status_code == 200
+    assert "Signed up newplayer@mergington.edu for Basketball Team" in response.json()["message"]
+
+    # Test Art Club (artistic)
+    response = client.post("/activities/Art%20Club/signup?email=artist@mergington.edu")
+    assert response.status_code == 200
+    assert "Signed up artist@mergington.edu for Art Club" in response.json()["message"]
+
+    # Test Debate Club (intellectual)
+    response = client.post("/activities/Debate%20Club/signup?email=debater@mergington.edu")
+    assert response.status_code == 200
+    assert "Signed up debater@mergington.edu for Debate Club" in response.json()["message"]
