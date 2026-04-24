@@ -53,3 +53,20 @@ def test_new_activity_signup():
     response = client.post("/activities/Debate%20Club/signup?email=debater@mergington.edu")
     assert response.status_code == 200
     assert "Signed up debater@mergington.edu for Debate Club" in response.json()["message"]
+
+
+def test_unregister_success():
+    """Test successful unregistration"""
+    # First sign up
+    client.post("/activities/Basketball%20Team/signup?email=unregister@mergington.edu")
+    # Then unregister
+    response = client.delete("/activities/Basketball%20Team/signup?email=unregister@mergington.edu")
+    assert response.status_code == 200
+    assert "Unregistered unregister@mergington.edu from Basketball Team" in response.json()["message"]
+
+
+def test_unregister_not_signed_up():
+    """Test unregistering a student not signed up"""
+    response = client.delete("/activities/Basketball%20Team/signup?email=notsigned@mergington.edu")
+    assert response.status_code == 400
+    assert "Student not signed up for this activity" in response.json()["detail"]
